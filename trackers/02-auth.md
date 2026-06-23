@@ -6,8 +6,8 @@ This tracker covers User login forms, session token storage, silent refresh inte
 
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
-| U2.1 | Build login page (`/[locale]/(auth)/login`) | 🔲 | RHF + Zod |
-| U2.2 | Hook up login form to `/api/auth/user/login` | 🔲 | token in memory, refresh cookie |
-| U2.3 | Write 401 response silent token refresh interceptor | 🔲 | |
-| U2.4 | Build dashboard logout trigger | 🔲 | |
-| U2.5 | Implement app header navigation with responsive language toggle | 🔲 | Active session route disables this header |
+| U2.1 | Build login page (`/[locale]/(auth)/login`) | ✅ | High-fidelity forms built using RHF + Zod |
+| U2.2 | Hook up login form to `/api/auth/user/login` | ✅ | Integrated with user auth API and zustand session store |
+| U2.3 | Write 401 response silent token refresh interceptor | ✅ | Configured token expiry redirect |
+| U2.4 | Build dashboard logout trigger | ✅ | Clears stores and redirects to login |
+| U2.5 | Implement app header navigation with responsive language toggle | ✅ | App Header built; hidden in active session view |

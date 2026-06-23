@@ -6,12 +6,12 @@ This folder contains the modular trackers for the `Multiple-Choice-Questions-Use
 
 | Phase | Tracker File | Total Tasks | ✅ Done | 🔄 In Progress | Status |
 |-------|--------------|-------------|---------|----------------|--------|
-| Phase 1: Foundation | [`01-foundation.md`](./01-foundation.md) | 7 | 6 | 1 | 🔄 In Progress |
-| Phase 2: Auth & Shell | [`02-auth.md`](./02-auth.md) | 5 | 0 | 0 | 🔲 Todo |
-| Phase 3: Quiz Discovery | [`03-discovery.md`](./03-discovery.md) | 4 | 0 | 0 | 🔲 Todo |
-| Phase 4: Quiz Session | [`04-quiz-session.md`](./04-quiz-session.md) | 12 | 0 | 0 | 🔲 Todo |
-| Phase 5: Results & Profile | [`05-results.md`](./05-results.md) | 6 | 0 | 0 | 🔲 Todo |
-| Phase 6: Safe Mode | [`06-safe-mode.md`](./06-safe-mode.md) | 7 | 0 | 0 | 🔲 Todo |
+| Phase 1: Foundation | [`01-foundation.md`](./01-foundation.md) | 7 | 7 | 0 | ✅ Done |
+| Phase 2: Auth & Shell | [`02-auth.md`](./02-auth.md) | 5 | 5 | 0 | ✅ Done |
+| Phase 3: Quiz Discovery | [`03-discovery.md`](./03-discovery.md) | 4 | 4 | 0 | ✅ Done |
+| Phase 4: Quiz Session | [`04-quiz-session.md`](./04-quiz-session.md) | 12 | 12 | 0 | ✅ Done |
+| Phase 5: Results & Profile | [`05-results.md`](./05-results.md) | 6 | 6 | 0 | ✅ Done |
+| Phase 6: Safe Mode | [`06-safe-mode.md`](./06-safe-mode.md) | 7 | 7 | 0 | ✅ Done |
 | Phase 7: Polish & Deploy | [`07-polish.md`](./07-polish.md) | 8 | 0 | 0 | 🔲 Todo |
 
 ---

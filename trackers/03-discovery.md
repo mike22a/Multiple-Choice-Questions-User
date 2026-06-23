@@ -6,7 +6,7 @@ Covers the candidate home dashboard, quiz browse panels, and introduction rules 
 
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
-| U3.1 | Home dashboard layout | 🔲 | List active quizzes & recent attempts |
-| U3.2 | Quiz browse grid | 🔲 | Search and category filter controls |
-| U3.3 | `QuizCard` summary component | 🔲 | Time limit, max attempts info |
-| U3.4 | Quiz entry description / regulations page (`/quizzes/[slug]`) | 🔲 | Triggers quiz initiation endpoint |
+| U3.1 | Home dashboard layout | ✅ | Render active quizzes and attempt logs with responsive layout |
+| U3.2 | Quiz browse grid | ✅ | Integrated beautifully with search and details display |
+| U3.3 | `QuizCard` summary component | ✅ | Displays duration, passing score, proctor indicator and start/resume actions |
+| U3.4 | Quiz entry description / regulations page (`/quizzes/[slug]`) | ✅ | Integrated modal overlay for start instructions |
