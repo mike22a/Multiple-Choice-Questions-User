@@ -70,20 +70,21 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
   useEffect(() => {
     async function loadSession() {
       try {
-        const data = await apiClient(`/api/user/attempts/${attemptId}`);
+        const res = await apiClient(`/api/user/attempts/${attemptId}`);
+        const data = res?.data;
         
         // If attempt is not in progress, redirect to result
-        if (data.status && data.status !== 'in_progress') {
+        if (data?.status && data.status !== 'in_progress') {
           router.replace(`/quizzes/${attemptId}/result`);
           return;
         }
 
         setSession(data);
-        setSelectedAnswers(data.answers || {});
-        setViolationsCount(data.attempt.safeModeViolations || 0);
+        setSelectedAnswers(data?.answers || {});
+        setViolationsCount(data?.attempt?.safeModeViolations || 0);
 
         // Compute initial countdown time remaining
-        const diff = differenceInSeconds(new Date(data.attempt.expiresAt), new Date());
+        const diff = differenceInSeconds(new Date(data?.attempt?.expiresAt), new Date());
         setTimeLeft(diff > 0 ? diff : 0);
       } catch (err: any) {
         setError(err?.message || 'Failed to initialize exam session.');
@@ -140,7 +141,12 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
             method: 'POST',
             body: JSON.stringify({ violation_type: 'tab_switch' }),
           });
-          setViolationsCount(violationRes.violationCount || (prev => prev + 1));
+          const newCount = violationRes?.data?.violationCount;
+          if (newCount !== undefined) {
+            setViolationsCount(newCount);
+          } else {
+            setViolationsCount(prev => prev + 1);
+          }
           setShowProctorWarning(true);
         } catch (err) {
           console.error('Failed to log violation:', err);

@@ -9,14 +9,11 @@ import {
   ArrowLeft, 
   Check, 
   X, 
-  HelpCircle, 
   AlertTriangle,
   Lock,
   Sparkles,
-  Info,
-  Calendar
+  Info
 } from 'lucide-react';
-import { format } from 'date-fns';
 
 interface AttemptResult {
   attempt: {
@@ -66,8 +63,8 @@ export default function QuizResultPage({ params }: { params: { attemptId: string
   useEffect(() => {
     async function loadResult() {
       try {
-        const data = await apiClient(`/api/user/attempts/${attemptId}/result`);
-        setResult(data);
+        const res = await apiClient(`/api/user/attempts/${attemptId}/result`);
+        setResult(res?.data || res);
       } catch (err: any) {
         setError(err?.message || 'Failed to retrieve attempt result details.');
       } finally {

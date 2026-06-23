@@ -62,12 +62,12 @@ export default function CandidateDashboardPage() {
   const loadDashboardData = async () => {
     setIsLoading(true);
     try {
-      const [quizData, attemptData] = await Promise.all([
+      const [quizRes, attemptRes] = await Promise.all([
         apiClient('/api/user/quizzes'),
         apiClient('/api/user/attempts'),
       ]);
-      setQuizzes(quizData || []);
-      setAttempts(attemptData || []);
+      setQuizzes(quizRes?.data || []);
+      setAttempts(attemptRes?.data || []);
     } catch (err: any) {
       setError(err?.message || 'Failed to fetch candidate dashboard metrics');
     } finally {
