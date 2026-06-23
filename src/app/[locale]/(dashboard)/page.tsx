@@ -83,9 +83,10 @@ export default function CandidateDashboardPage() {
     if (!selectedQuiz) return;
     setIsStartLoading(true);
     try {
-      const data = await apiClient(`/api/user/quizzes/${selectedQuiz.slug}/start`, {
+      const res = await apiClient(`/api/user/quizzes/${selectedQuiz.slug}/start`, {
         method: 'POST',
       });
+      const data = res?.data || res;
       setSelectedQuiz(null);
       router.push(`/quizzes/${data.attemptId}/session`);
     } catch (err: any) {

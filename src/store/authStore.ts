@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface UserProfile {
   id: string;
@@ -17,10 +18,17 @@ interface AuthState {
   clearAuth: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  token: null,
-  profile: null,
-  isAuthenticated: false,
-  setAuth: (token, profile) => set({ token, profile, isAuthenticated: true }),
-  clearAuth: () => set({ token: null, profile: null, isAuthenticated: false }),
-}));
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      token: null,
+      profile: null,
+      isAuthenticated: false,
+      setAuth: (token, profile) => set({ token, profile, isAuthenticated: true }),
+      clearAuth: () => set({ token: null, profile: null, isAuthenticated: false }),
+    }),
+    {
+      name: 'mcq-user-auth',
+    }
+  )
+);
