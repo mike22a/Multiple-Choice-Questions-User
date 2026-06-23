@@ -11,3 +11,4 @@ This tracker covers User login forms, session token storage, silent refresh inte
 | U2.3 | Write 401 response silent token refresh interceptor | ✅ | Configured token expiry redirect |
 | U2.4 | Build dashboard logout trigger | ✅ | Clears stores and redirects to login |
 | U2.5 | Implement app header navigation with responsive language toggle | ✅ | App Header built; hidden in active session view |
+| U2.6 | Resolve hydration race condition for persisted Zustand session | ⏳ | Plan prepared: wait for Zustand persist hydration before executing auth guard redirects in layout |
