@@ -1,0 +1,51 @@
+{
+  "Common": {
+    "title": "Sistem Kuis MCQ",
+    "loading": "Memuat...",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "submit": "Kirim",
+    "back": "Kembali",
+    "next": "Berikutnya",
+    "prev": "Sebelumnya",
+    "logout": "Keluar",
+    "login": "Masuk"
+  },
+  "Auth": {
+    "loginTitle": "Masuk Peserta",
+    "username": "Nama Pengguna",
+    "password": "Kata Sandi",
+    "signIn": "Masuk",
+    "loggingIn": "Memproses Masuk...",
+    "invalidCredentials": "Nama pengguna atau kata sandi salah"
+  },
+  "Dashboard": {
+    "welcome": "Selamat datang kembali, {name}",
+    "subheading": "Pilih kuis aktif untuk memulai ujian Anda",
+    "noQuizzes": "Tidak ada kuis aktif yang tersedia saat ini.",
+    "history": "Riwayat Kuis Saya",
+    "attempts": "Percobaan",
+    "score": "Nilai",
+    "status": "Status",
+    "date": "Tanggal"
+  },
+  "Quiz": {
+    "duration": "Durasi: {minutes} menit",
+    "maxAttempts": "Batas Percobaan: {count} kali",
+    "passingScore": "Nilai Kelulusan: {score}%",
+    "startQuiz": "Mulai Kuis",
+    "resumeQuiz": "Lanjutkan Kuis",
+    "warningTitle": "Baca dengan Seksama Sebelum Memulai",
+    "rules": "1. Pastikan Anda memiliki koneksi internet yang stabil.\n2. Setelah dimulai, penghitung waktu tidak dapat dihentikan.\n3. Jangan beralih tab atau menutup jendela browser. Pelanggaran aturan ini akan memicu peringatan sistem proctoring.",
+    "confirmStart": "Apakah Anda yakin ingin memulai kuis ini?"
+  },
+  "Session": {
+    "timer": "Sisa Waktu",
+    "questionOf": "Pertanyaan {current} dari {total}",
+    "answered": "Terjawab",
+    "unanswered": "Belum Terjawab",
+    "confirmSubmitTitle": "Kirim Percobaan Kuis?",
+    "confirmSubmitDesc": "Apakah Anda yakin ingin mengirimkan jawaban Anda? Anda tidak dapat mengubahnya setelah dikirim.",
+    "warningUnanswered": "Peringatan: Anda memiliki {count} pertanyaan yang belum dijawab."
+  }
+}

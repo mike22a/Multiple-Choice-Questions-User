@@ -6,7 +6,7 @@ This folder contains the modular trackers for the `Multiple-Choice-Questions-Use
 
 | Phase | Tracker File | Total Tasks | ✅ Done | 🔄 In Progress | Status |
 |-------|--------------|-------------|---------|----------------|--------|
-| Phase 1: Foundation | [`01-foundation.md`](./01-foundation.md) | 7 | 0 | 0 | 🔲 Todo |
+| Phase 1: Foundation | [`01-foundation.md`](./01-foundation.md) | 7 | 6 | 1 | 🔄 In Progress |
 | Phase 2: Auth & Shell | [`02-auth.md`](./02-auth.md) | 5 | 0 | 0 | 🔲 Todo |
 | Phase 3: Quiz Discovery | [`03-discovery.md`](./03-discovery.md) | 4 | 0 | 0 | 🔲 Todo |
 | Phase 4: Quiz Session | [`04-quiz-session.md`](./04-quiz-session.md) | 12 | 0 | 0 | 🔲 Todo |

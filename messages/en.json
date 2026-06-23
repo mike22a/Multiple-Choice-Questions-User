@@ -1,0 +1,51 @@
+{
+  "Common": {
+    "title": "MCQ Quiz System",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "prev": "Previous",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "Auth": {
+    "loginTitle": "Candidate Login",
+    "username": "Username",
+    "password": "Password",
+    "signIn": "Sign In",
+    "loggingIn": "Signing In...",
+    "invalidCredentials": "Invalid username or password"
+  },
+  "Dashboard": {
+    "welcome": "Welcome back, {name}",
+    "subheading": "Select an active quiz to start your exam",
+    "noQuizzes": "No active quizzes available at this time.",
+    "history": "My Quiz History",
+    "attempts": "Attempts",
+    "score": "Score",
+    "status": "Status",
+    "date": "Date"
+  },
+  "Quiz": {
+    "duration": "Duration: {minutes} minutes",
+    "maxAttempts": "Max Attempts: {count}",
+    "passingScore": "Passing Score: {score}%",
+    "startQuiz": "Start Quiz",
+    "resumeQuiz": "Resume Quiz",
+    "warningTitle": "Read Carefully Before Starting",
+    "rules": "1. Make sure you have a stable internet connection.\n2. Once started, the timer cannot be paused.\n3. Do not switch tabs or close the browser window. Violating this will trigger proctoring alerts.",
+    "confirmStart": "Are you sure you want to start this quiz?"
+  },
+  "Session": {
+    "timer": "Time Remaining",
+    "questionOf": "Question {current} of {total}",
+    "answered": "Answered",
+    "unanswered": "Unanswered",
+    "confirmSubmitTitle": "Submit Quiz Attempt?",
+    "confirmSubmitDesc": "Are you sure you want to submit your answers? You cannot change them once submitted.",
+    "warningUnanswered": "Warning: You have {count} unanswered questions."
+  }
+}
