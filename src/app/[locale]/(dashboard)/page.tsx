@@ -31,6 +31,15 @@ interface QuizItem {
   safe_mode: boolean;
   attempts_taken: number;
   active_attempt_id: string | null;
+  category_id: string | null;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+    parent_id: string | null;
+    path: string;
+    depth: number;
+  } | null;
 }
 
 interface AttemptItem {
@@ -54,6 +63,9 @@ export default function CandidateDashboardPage() {
   const [attempts, setAttempts] = useState<AttemptItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Filtering States
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
 
   // Start Quiz Modal states
   const [selectedQuiz, setSelectedQuiz] = useState<QuizItem | null>(null);
@@ -125,86 +137,157 @@ export default function CandidateDashboardPage() {
       </div>
 
       {/* Quizzes List section */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          <Play className="h-5 w-5 text-emerald-400" />
-          <span>Active Examination Board</span>
-        </h2>
+      <div className="space-y-6">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between border-b border-slate-900 pb-4">
+          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <Play className="h-5 w-5 text-emerald-400" />
+            <span>Active Examination Board</span>
+          </h2>
 
-        {quizzes.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {quizzes.map((quiz) => {
-              const attemptsLeft = quiz.max_attempts - quiz.attempts_taken;
-              const isExhausted = attemptsLeft <= 0;
-              const hasActiveSession = !!quiz.active_attempt_id;
+          {/* Extract unique categories from quizzes */}
+          {quizzes.length > 0 && (() => {
+            const uniqueCategories: any[] = [];
+            quizzes.forEach((quiz) => {
+              if (quiz.category && !uniqueCategories.some((c) => c.id === quiz.category?.id)) {
+                uniqueCategories.push(quiz.category);
+              }
+            });
 
-              return (
-                <div 
-                  key={quiz.id} 
-                  className="group flex flex-col justify-between rounded-2xl border border-slate-900 bg-slate-900/30 p-6 backdrop-blur-xl transition hover:border-slate-800"
+            if (uniqueCategories.length === 0) return null;
+
+            return (
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  onClick={() => setSelectedCategoryFilter('all')}
+                  className={`rounded-xl px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition ${
+                    selectedCategoryFilter === 'all'
+                      ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/10'
+                      : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                  }`}
                 >
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-start gap-2">
-                      <h3 className="font-bold text-white group-hover:text-emerald-400 transition line-clamp-1">{quiz.title}</h3>
-                      {quiz.safe_mode && (
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400" title="Proctored exam">
-                          <Lock className="h-3 w-3" />
+                  All ({quizzes.length})
+                </button>
+                {uniqueCategories.map((cat) => {
+                  const count = quizzes.filter(q => q.category_id === cat.id).length;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => setSelectedCategoryFilter(cat.id)}
+                      className={`rounded-xl px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition ${
+                        selectedCategoryFilter === cat.id
+                          ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/10'
+                          : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                      }`}
+                    >
+                      {cat.name} ({count})
+                    </button>
+                  );
+                })}
+              </div>
+            );
+          })()}
+        </div>
+
+        {(() => {
+          const filteredQuizzes = quizzes.filter((q) => {
+            if (selectedCategoryFilter === 'all') return true;
+            return q.category_id === selectedCategoryFilter;
+          });
+
+          if (filteredQuizzes.length > 0) {
+            return (
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {filteredQuizzes.map((quiz) => {
+                  const attemptsLeft = quiz.max_attempts - quiz.attempts_taken;
+                  const isExhausted = attemptsLeft <= 0;
+                  const hasActiveSession = !!quiz.active_attempt_id;
+
+                  return (
+                    <div 
+                      key={quiz.id} 
+                      className="group flex flex-col justify-between rounded-2xl border border-slate-900 bg-slate-900/30 p-6 backdrop-blur-xl transition hover:border-slate-800"
+                    >
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-start gap-2">
+                          <div>
+                            <h3 className="font-bold text-white group-hover:text-emerald-400 transition line-clamp-1">{quiz.title}</h3>
+                            
+                            {/* Category Badge */}
+                            <div className="mt-1 flex flex-wrap">
+                              {quiz.category ? (
+                                <span className="inline-flex items-center rounded bg-emerald-500/10 px-1.5 py-0.5 text-[9px] font-bold text-emerald-400 uppercase tracking-wider">
+                                  {quiz.category.name}
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center rounded bg-slate-800 px-1.5 py-0.5 text-[9px] font-bold text-slate-500 uppercase tracking-wider">
+                                  Uncategorized
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          {quiz.safe_mode && (
+                            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400" title="Proctored exam">
+                              <Lock className="h-3 w-3" />
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-slate-400 line-clamp-2 h-8">{quiz.description || 'No instructions provided.'}</p>
+                        
+                        {/* Meta stats */}
+                        <div className="grid grid-cols-2 gap-2 text-xs border-t border-slate-900 pt-3">
+                          <div className="flex items-center gap-1.5 text-slate-500">
+                            <Clock className="h-3.5 w-3.5" />
+                            <span>{quiz.duration_minutes} mins</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-slate-500">
+                            <Award className="h-3.5 w-3.5" />
+                            <span>Pass: {quiz.pass_score}%</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-6 border-t border-slate-900 pt-4 flex items-center justify-between">
+                        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                          {isExhausted ? 'Exhausted' : `${attemptsLeft} of ${quiz.max_attempts} attempts left`}
                         </span>
-                      )}
-                    </div>
-                    <p className="text-xs text-slate-400 line-clamp-2 h-8">{quiz.description || 'No instructions provided.'}</p>
-                    
-                    {/* Meta stats */}
-                    <div className="grid grid-cols-2 gap-2 text-xs border-t border-slate-900 pt-3">
-                      <div className="flex items-center gap-1.5 text-slate-500">
-                        <Clock className="h-3.5 w-3.5" />
-                        <span>{quiz.duration_minutes} mins</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-slate-500">
-                        <Award className="h-3.5 w-3.5" />
-                        <span>Pass: {quiz.pass_score}%</span>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="mt-6 border-t border-slate-900 pt-4 flex items-center justify-between">
-                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
-                      {isExhausted ? 'Exhausted' : `${attemptsLeft} of ${quiz.max_attempts} attempts left`}
-                    </span>
-
-                    {hasActiveSession ? (
-                      <Link
-                        href={`/quizzes/${quiz.active_attempt_id}/session`}
-                        className="inline-flex items-center gap-1.5 rounded-xl bg-amber-600 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-amber-600/15 hover:brightness-110 active:scale-[0.98] transition"
-                      >
-                        {tq('resumeQuiz')}
-                      </Link>
-                    ) : isExhausted ? (
-                      <button
-                        disabled
-                        className="rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-2 text-xs font-semibold text-slate-600 cursor-not-allowed"
-                      >
-                        Exhausted
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => setSelectedQuiz(quiz)}
-                        className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-emerald-500/15 hover:brightness-110 active:scale-[0.98] transition"
-                      >
-                        {tq('startQuiz')}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="rounded-2xl border border-dashed border-slate-800 p-12 text-center text-slate-500">
-            <HelpCircle className="mx-auto mb-3 h-10 w-10 opacity-35" />
-            <p className="text-sm">{t('noQuizzes')}</p>
-          </div>
-        )}
+                        {hasActiveSession ? (
+                          <Link
+                            href={`/quizzes/${quiz.active_attempt_id}/session`}
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-amber-600 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-amber-600/15 hover:brightness-110 active:scale-[0.98] transition"
+                          >
+                            {tq('resumeQuiz')}
+                          </Link>
+                        ) : isExhausted ? (
+                          <button
+                            disabled
+                            className="rounded-xl border border-slate-800 bg-slate-900/40 px-4 py-2 text-xs font-semibold text-slate-600 cursor-not-allowed"
+                          >
+                            Exhausted
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => setSelectedQuiz(quiz)}
+                            className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-emerald-500/15 hover:brightness-110 active:scale-[0.98] transition"
+                          >
+                            {tq('startQuiz')}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          } else {
+            return (
+              <div className="rounded-2xl border border-dashed border-slate-800 p-12 text-center text-slate-500">
+                <HelpCircle className="mx-auto mb-3 h-10 w-10 opacity-35" />
+                <p className="text-sm">{t('noQuizzes')}</p>
+              </div>
+            );
+          }
+        })()}
       </div>
 
       {/* Attempts History Section */}

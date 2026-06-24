@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import CodeBlock from '@/components/CodeBlock';
 import { apiClient } from '@/lib/api-client';
 import { useRouter } from '@/navigation';
 import { useTranslations } from 'next-intl';
@@ -35,6 +36,8 @@ interface AttemptResult {
     questionType: 'single' | 'multiple';
     points: number;
     explanation: string | null;
+    codeLanguage?: string | null;
+    codeContent?: string | null;
     images: Array<{ id: string; publicUrl: string; altText: string }>;
     options: Array<{
       id: string;
@@ -182,6 +185,11 @@ export default function QuizResultPage({ params }: { params: { attemptId: string
                         <span>{q.points} pts</span>
                       </span>
                     </div>
+
+                    {/* Code Block */}
+                    {q.codeLanguage && q.codeContent && (
+                      <CodeBlock language={q.codeLanguage} code={q.codeContent} />
+                    )}
 
                     {/* Question Images */}
                     {q.images && q.images.length > 0 && (

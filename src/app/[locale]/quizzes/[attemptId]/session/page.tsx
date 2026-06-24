@@ -18,12 +18,15 @@ import {
   X
 } from 'lucide-react';
 import { differenceInSeconds } from 'date-fns';
+import CodeBlock from '@/components/CodeBlock';
 
 interface Question {
   id: string;
   questionText: string;
   questionType: 'single' | 'multiple';
   points: number;
+  codeLanguage?: string | null;
+  codeContent?: string | null;
   images: Array<{ id: string; publicUrl: string; altText: string }>;
   options: Array<{ id: string; optionText: string }>;
 }
@@ -310,6 +313,11 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
             </span>
             <h2 className="text-base sm:text-lg font-bold text-white leading-relaxed">{currentQuestion.questionText}</h2>
           </div>
+
+          {/* Code Block */}
+          {currentQuestion.codeLanguage && currentQuestion.codeContent && (
+            <CodeBlock language={currentQuestion.codeLanguage} code={currentQuestion.codeContent} />
+          )}
 
           {/* Question Images */}
           {currentQuestion.images && currentQuestion.images.length > 0 && (
