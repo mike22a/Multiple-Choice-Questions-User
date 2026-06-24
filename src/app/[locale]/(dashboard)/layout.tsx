@@ -133,7 +133,7 @@ export default function CandidateDashboardLayout({ children, params: { locale } 
       </header>
 
       {/* Content Area */}
-      <main className="min-h-[calc(100vh-4rem)] max-w-6xl mx-auto p-6 lg:p-8">
+      <main className="min-h-[calc(100vh-4rem)] max-w-6xl mx-auto p-6 lg:p-8 w-full min-w-0">
         {children}
       </main>
     </div>
