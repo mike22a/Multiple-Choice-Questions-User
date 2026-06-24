@@ -12,3 +12,5 @@ This tracker covers User login forms, session token storage, silent refresh inte
 | U2.4 | Build dashboard logout trigger | ✅ | Clears stores and redirects to login |
 | U2.5 | Implement app header navigation with responsive language toggle | ✅ | App Header built; hidden in active session view |
 | U2.6 | Resolve hydration race condition for persisted Zustand session | ✅ | Wait for Zustand persist hydration before executing auth guard redirects in layout |
+| U2.7 | Fix responsive horizontal layout overflow (viewport bleeding) | ✅ | Constrained layout container using relative and overflow-x-hidden |
+| U2.8 | Tune modal sizing & padding responsive constraints | ✅ | Redefined modal widths and paddings to fit beautifully on small screens |

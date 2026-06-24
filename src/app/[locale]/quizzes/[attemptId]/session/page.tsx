@@ -250,7 +250,7 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
       {/* Proctor warnings overlay */}
       {showProctorWarning && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-md animate-fade-in">
-          <div className="w-full max-w-md rounded-3xl border border-rose-500/30 bg-slate-900 p-8 shadow-2xl space-y-6 text-center">
+          <div className="w-[90%] max-w-md rounded-2xl border border-rose-500/30 bg-slate-900 p-6 sm:p-8 shadow-2xl space-y-6 text-center max-h-[90vh] overflow-y-auto">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-500/10 text-rose-400">
               <ShieldAlert className="h-7 w-7" />
             </div>
@@ -408,7 +408,7 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
       {/* Manual Submit Confirmation Modal */}
       {showSubmitConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900 p-8 shadow-2xl space-y-6">
+          <div className="w-[95%] max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <h2 className="text-lg font-bold text-white">{t('confirmSubmitTitle')}</h2>
               <button

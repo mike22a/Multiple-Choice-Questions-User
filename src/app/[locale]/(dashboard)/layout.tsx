@@ -69,7 +69,7 @@ export default function CandidateDashboardLayout({ children, params: { locale } 
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans">
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans relative overflow-x-hidden">
       {/* Background glowing decorations */}
       <div className="absolute top-0 right-0 h-[500px] w-[500px] rounded-full bg-emerald-600/5 blur-[150px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 h-[500px] w-[500px] rounded-full bg-teal-600/5 blur-[150px] pointer-events-none" />
