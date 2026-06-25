@@ -23,7 +23,7 @@ import CodeBlock from '@/components/CodeBlock';
 interface Question {
   id: string;
   questionText: string;
-  questionType: 'single' | 'multiple';
+  questionType: 'single' | 'multiple' | 'weighted';
   points: number;
   codeLanguage?: string | null;
   codeContent?: string | null;
@@ -164,7 +164,7 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
   }, [session, attemptId]);
 
   // Answer selection handler
-  const handleSelectOption = async (questionId: string, optionId: string, type: 'single' | 'multiple') => {
+  const handleSelectOption = async (questionId: string, optionId: string, type: 'single' | 'multiple' | 'weighted') => {
     let newSelections: string[] = [];
 
     if (type === 'single') {
