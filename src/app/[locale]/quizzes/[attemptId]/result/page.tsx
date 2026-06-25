@@ -233,7 +233,9 @@ export default function QuizResultPage({ params }: { params: { attemptId: string
                           <Sparkles className="h-3.5 w-3.5" />
                           <span>Explanation</span>
                         </div>
-                        <p className="text-slate-400 leading-relaxed">{q.explanation}</p>
+                        <div className="text-slate-400 leading-relaxed">
+                          {renderExplanationWithCode(q.explanation)}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -253,4 +255,31 @@ export default function QuizResultPage({ params }: { params: { attemptId: string
       </div>
     </div>
   );
+}
+
+function renderExplanationWithCode(text: string | null) {
+  if (!text) return null;
+  const parts = text.split(/(```[\s\S]*?```)/g);
+  return parts.map((part, idx) => {
+    if (part.startsWith('```') && part.endsWith('```')) {
+      const content = part.slice(3, -3);
+      const firstNewlineIdx = content.indexOf('\n');
+      let language = 'text';
+      let code = content;
+      if (firstNewlineIdx !== -1) {
+        const potentialLang = content.slice(0, firstNewlineIdx).trim();
+        if (potentialLang && potentialLang.length < 15) {
+          language = potentialLang;
+          code = content.slice(firstNewlineIdx + 1);
+        }
+      }
+      return <CodeBlock key={idx} language={language} code={code} />;
+    } else {
+      return (
+        <span key={idx} className="whitespace-pre-wrap block my-1">
+          {part}
+        </span>
+      );
+    }
+  });
 }
