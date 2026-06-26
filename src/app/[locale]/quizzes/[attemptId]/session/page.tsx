@@ -297,7 +297,7 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
             className="flex items-center gap-1.5 rounded-2xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-lg hover:bg-emerald-500 transition"
           >
             <Send className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Finish Exam</span>
+            <span>{tc('submit')}</span>
           </button>
         </div>
       </header>
@@ -365,14 +365,23 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
               <ChevronLeft className="h-5 w-5" />
               <span>{tc('prev')}</span>
             </button>
-            <button
-              onClick={() => setCurrentQuestionIndex(prev => Math.min(totalQuestions - 1, prev + 1))}
-              disabled={currentQuestionIndex === totalQuestions - 1}
-              className="flex items-center gap-1 text-sm font-semibold text-slate-400 hover:text-white disabled:opacity-30 disabled:pointer-events-none transition"
-            >
-              <span>{tc('next')}</span>
-              <ChevronRight className="h-5 w-5" />
-            </button>
+            {currentQuestionIndex === totalQuestions - 1 ? (
+              <button
+                onClick={() => setShowSubmitConfirm(true)}
+                className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg hover:bg-emerald-500 transition"
+              >
+                <span>{tc('submit')}</span>
+                <Send className="h-3.5 w-3.5" />
+              </button>
+            ) : (
+              <button
+                onClick={() => setCurrentQuestionIndex(prev => Math.min(totalQuestions - 1, prev + 1))}
+                className="flex items-center gap-1 text-sm font-semibold text-slate-400 hover:text-white transition"
+              >
+                <span>{tc('next')}</span>
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            )}
           </div>
         </div>
 
