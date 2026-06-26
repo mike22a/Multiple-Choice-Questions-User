@@ -112,14 +112,16 @@ export default function QuizResultPage({ params }: { params: { attemptId: string
       <div className="absolute bottom-0 left-0 h-[500px] w-[500px] rounded-full bg-teal-600/5 blur-[150px] pointer-events-none" />
 
       <div className="max-w-3xl mx-auto space-y-8 relative">
-        {/* Back Button */}
-        <button
-          onClick={() => router.push('/')}
-          className="flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white transition"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          <span>Back to Dashboard</span>
-        </button>
+        {/* Sticky Back Button Container */}
+        <div className="sticky top-4 z-20 flex justify-start pointer-events-none">
+          <button
+            onClick={() => router.push('/')}
+            className="pointer-events-auto flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-950/80 backdrop-blur px-4 py-2.5 text-xs font-bold text-slate-300 hover:text-white shadow-xl hover:border-slate-700 transition"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span>Back to Dashboard</span>
+          </button>
+        </div>
 
         {/* Score Card Banner */}
         <div className={`rounded-3xl border p-8 shadow-xl text-center space-y-6 ${
