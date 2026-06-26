@@ -55,6 +55,7 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
   const [session, setSession] = useState<AttemptSession | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string[]>>({});
+  const [flaggedQuestions, setFlaggedQuestions] = useState<Record<string, boolean>>({});
   const [timeLeft, setTimeLeft] = useState<number>(0); // in seconds
   
   // Proctoring State
@@ -85,6 +86,13 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
         setSession(data);
         setSelectedAnswers(data?.answers || {});
         setViolationsCount(data?.attempt?.safeModeViolations || 0);
+        
+        // Map flagged array of question IDs into a lookup dictionary
+        const flaggedMap = (data?.flagged || []).reduce((acc: Record<string, boolean>, id: string) => {
+          acc[id] = true;
+          return acc;
+        }, {});
+        setFlaggedQuestions(flaggedMap);
 
         // Compute initial countdown time remaining
         const diff = differenceInSeconds(new Date(data?.attempt?.expiresAt), new Date());
@@ -195,6 +203,30 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
       });
     } catch (err) {
       console.error('Drafting answer to Redis failed:', err);
+    }
+  };
+
+  // Toggle Flag (Ragu-Ragu) handler
+  const handleToggleFlag = async (questionId: string) => {
+    const isCurrentlyFlagged = !!flaggedQuestions[questionId];
+    const newFlaggedState = !isCurrentlyFlagged;
+
+    // Update local state immediately for fast feedback
+    setFlaggedQuestions(prev => ({
+      ...prev,
+      [questionId]: newFlaggedState,
+    }));
+
+    try {
+      await apiClient(`/api/user/attempts/${attemptId}/flag`, {
+        method: 'POST',
+        body: JSON.stringify({
+          question_id: questionId,
+          is_flagged: newFlaggedState,
+        }),
+      });
+    } catch (err) {
+      console.error('Failed to update flag status:', err);
     }
   };
 
@@ -365,13 +397,26 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
               <ChevronLeft className="h-5 w-5" />
               <span>{tc('prev')}</span>
             </button>
+
+            <button
+              onClick={() => handleToggleFlag(currentQuestion.id)}
+              className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition border ${
+                flaggedQuestions[currentQuestion.id]
+                  ? 'bg-amber-500/10 border-amber-500 text-amber-400 shadow-md shadow-amber-500/10'
+                  : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-300'
+              }`}
+            >
+              <HelpCircle className="h-4 w-4 shrink-0" />
+              <span>Ragu-Ragu</span>
+            </button>
+
             {currentQuestionIndex === totalQuestions - 1 ? (
               <button
                 onClick={() => setShowSubmitConfirm(true)}
                 className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg hover:bg-emerald-500 transition"
               >
-                <span>{tc('submit')}</span>
                 <Send className="h-3.5 w-3.5" />
+                <span>{tc('submit')}</span>
               </button>
             ) : (
               <button
@@ -393,12 +438,14 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
             {session.questions.map((q, idx) => {
               const hasAnswers = selectedAnswers[q.id] && selectedAnswers[q.id].length > 0;
               const isCurrent = idx === currentQuestionIndex;
+              const isFlagged = !!flaggedQuestions[q.id];
               return (
                 <button
                   key={q.id}
                   onClick={() => setCurrentQuestionIndex(idx)}
                   className={`flex h-9 items-center justify-center rounded-xl font-bold text-xs border transition ${
                     isCurrent ? 'bg-emerald-500 text-slate-950 border-emerald-500 shadow-md shadow-emerald-500/10' :
+                    isFlagged ? 'bg-amber-500/20 border-amber-500/60 text-amber-400 shadow-md shadow-amber-500/5' :
                     hasAnswers ? 'border-slate-800 bg-slate-900/80 text-emerald-400' :
                     'border-slate-900 bg-slate-950 text-slate-500 hover:border-slate-800'
                   }`}
@@ -413,6 +460,10 @@ export default function QuizSessionPage({ params }: { params: { attemptId: strin
             <div className="flex items-center gap-2">
               <span className="h-3 w-3 rounded-full bg-emerald-500/10 border border-slate-800" />
               <span>{t('answered')}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-full bg-amber-500/20 border border-amber-500/50" />
+              <span>Ragu-Ragu</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="h-3 w-3 rounded-full bg-slate-950 border border-slate-900" />
